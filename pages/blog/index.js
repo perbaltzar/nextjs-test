@@ -11,6 +11,7 @@ const BLOG_QUERY = `query Blog {
     id
     publishDate
     title
+    slug
     content
     description
     image {
@@ -79,15 +80,15 @@ const Blog = ({ data }) => {
           initial="hidden"
           animate="visible"
         >
-          <Link href="/blog/:slug" as={`/blog/${post.id}`}>
-            <Img
-              variants={childVariants}
-              initial="hidden"
-              animate="visible"
-              data={post.image.responsiveImage}
-            />
-          </Link>
-          <Link href="/blog/:slug" as={`/blog/${post.id}`}>
+          {/* <Link href="/blog/:slug" as={`/blog/${post.id}`}> */}
+          <Img
+            variants={childVariants}
+            initial="hidden"
+            animate="visible"
+            data={post.image.responsiveImage}
+          />
+          {/* </Link> */}
+          <Link href="/blog/:slug" as={`/blog/${post.slug}`}>
             <Title
               variants={childVariants}
               initial="hidden"

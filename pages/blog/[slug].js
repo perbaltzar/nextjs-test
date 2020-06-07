@@ -1,104 +1,76 @@
-// import Layout from "components/Layout";
-// import { request } from "lib/datocms";
-// import { Image } from "react-datocms";
-// import styled from "styled-components";
-// import { useRouter } from "next/router";
+import Layout from "components/Layout";
+import { request } from "lib/datocms";
+import { getAllPostsWithSlug, getPostData } from "lib/posts";
+import { markdownToHtml } from "lib/markdownToHtml";
+import { Image } from "react-datocms";
+import styled from "styled-components";
+import { useRouter } from "next/router";
 
-// export async function getStaticProps({ params }) {
-//   const router = useRouter();
-//   const slug = router.query.slug;
-//   const data = await request(
-//     `
-//     query POSTQUERY(slug: String!) {
-//         post(filter: {id: {eq: ${slug}}) {
-//             content
-//             image {
-//             responsiveImage(imgixParams: { fit: crop, auto: format }) {
-//                 srcSet
-//                 webpSrcSet
-//                 sizes
-//                 src
-//                 width
-//                 height
-//                 aspectRatio
-//                 alt
-//                 title
-//                 base64
-//                 }
-//             }
-//             publishDate
-//             title
-//         }
-//     }
-//     `,
-//     {
-//       slug: params.slug,
-//     }
-//   );
-//   return {
-//     props: { data }, // will be passed to the page component as props
-//   };
-// }
+const Hej = ({ post }) => {
+  //   const router = useRouter();
+  //   if (!router.isFallback && !post?.slug) {
+  //     return <ErrorPage statusCode={404} />;
+  //   }
 
-// export async function getStaticPaths() {
-//   const posts = await request(
-//     `
-//         data {
-//             id
-//         }
-//     `
-//   );
+  console.log(post);
 
-//   return {
-//     paths: posts.map(({ slug }) => ({
-//       params: { slug },
-//     })),
-//     fallback: false,
-//   };
-// }
+  return (
+    <Layout pageTitle="Blog" direction="column">
+      <SPost key={post.id}>
+        <Image data={post.image.responsiveImage} />
+        <Link href="/blog/:slug" as={`/blog/${post.id}`}>
+          <Title>{post.title}</Title>
+        </Link>
+        <Date>Published: {post.publishDate}</Date>
+        <p>{post.title}</p>
+      </SPost>
+    </Layout>
+  );
+};
 
-// const Hej = ({ data }) => {
-//   const router = useRouter();
-//   console.log(router.query.slug);
-//   console.log(data);
+export async function getStaticProps({ params }) {
+  const data = await getPostAndMorePosts(params.slug);
+  const content = await markdownToHtml(data?.post?.content || "");
 
-//   return (
-//     <Layout pageTitle="Blog" direction="column">
-//       {/* {data.allPosts.map((post) => ( */}
-//       <SPost key={post.id}>
-//         <Image data={post.image.responsiveImage} />
-//         <Link href="/blog/:slug" as={`/blog/${post.id}`}>
-//           <Title>{post.title}</Title>
-//         </Link>
-//         <Date>Published: {post.publishDate}</Date>
-//         <p>{post.description}</p>
-//       </SPost>
-//       {/* ))} */}
-//     </Layout>
-//   );
-// };
+  return {
+    props: {
+      post: {
+        ...data?.post,
+        content,
+      },
+    },
+  };
+}
 
-// const SPost = styled.div`
-//   max-width: 960px;
-//   height: min-content;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: flex-start;
-//   justify-content: center;
-//   padding: 20px;
-//   margin: 20px;
-// `;
+export async function getStaticPaths() {
+  const allPosts = await getAllPostsWithSlug();
+  return {
+    paths: allPosts?.map((post) => `/posts/${post.slug}`) || [],
+    fallback: true,
+  };
+}
 
-// const Date = styled.p`
-//   font-size: 12px;
-//   font-style: italic;
-//   margin-bottom: 20px;
-// `;
+const SPost = styled.div`
+  max-width: 960px;
+  height: min-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  margin: 20px;
+`;
 
-// const Title = styled.h1`
-//   font-family: "Oswald", sans-serif;
-//   border-bottom: 2px solid #111216;
-//   margin-bottom: 5px;
-// `;
+const Date = styled.p`
+  font-size: 12px;
+  font-style: italic;
+  margin-bottom: 20px;
+`;
 
-// export default Hej;
+const Title = styled.h1`
+  font-family: "Oswald", sans-serif;
+  border-bottom: 2px solid #111216;
+  margin-bottom: 5px;
+`;
+
+export default Hej;
