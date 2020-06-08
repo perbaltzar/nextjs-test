@@ -39,15 +39,6 @@ const About = () => {
         React, NodeJS, SQL and it's probably the best descision I've ever made
         because I'm having so much fun learning to code.
       </Info>
-      <Info
-        initial={{ opacity: 0, x: '-100vw' }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ type: 'spring', stiffness: 60, delay: 2 }}
-      >
-        I first got in to web development when I was a bit younger and started
-        playing around with HTML and CSS. Unfortunately for me, I stopped
-        playing around with it because I felt that I didn't make any progress.
-      </Info>
     </Layout>
   );
 };
