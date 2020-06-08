@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import styled from "styled-components";
-import Link from "next/link";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
+import Link from 'next/link';
 
 const Menu = () => {
-  const [open, setOpen] = useState("-100");
+  const [open, setOpen] = useState('-100');
 
   return (
     <div>
@@ -17,9 +17,9 @@ const Menu = () => {
         <Line />
       </Burger>
       <SMenu
-        initial={{ x: "-100vw" }}
-        animate={{ x: open + "vw" }}
-        transition={{ type: "spring", stiffness: 60, damping: 13 }}
+        initial={{ x: '-100vw' }}
+        animate={{ x: open + 'vw' }}
+        transition={{ type: 'spring', stiffness: 60, damping: 13 }}
       >
         <Close
           whileHover={{ scale: 1.1, originX: 0 }}
@@ -32,7 +32,7 @@ const Menu = () => {
             scale: 1.15,
             originX: 0,
           }}
-          transition={{ type: "spring", stiffness: 200 }}
+          transition={{ type: 'spring', stiffness: 200 }}
         >
           <Link href="/">
             <A>Home</A>
@@ -42,9 +42,9 @@ const Menu = () => {
           whileHover={{
             scale: 1.15,
             originX: 0,
-            color: "#1b3c80",
+            color: '#1b3c80',
           }}
-          transition={{ type: "spring", stiffness: 200 }}
+          transition={{ type: 'spring', stiffness: 200 }}
         >
           <Link href="/projects">
             <A>Projects</A>
@@ -55,7 +55,7 @@ const Menu = () => {
             scale: 1.15,
             originX: 0,
           }}
-          transition={{ type: "spring", stiffness: 200 }}
+          transition={{ type: 'spring', stiffness: 200 }}
         >
           <Link href="/about">
             <A>About</A>
@@ -66,7 +66,18 @@ const Menu = () => {
             scale: 1.15,
             originX: 0,
           }}
-          transition={{ type: "spring", stiffness: 200 }}
+          transition={{ type: 'spring', stiffness: 200 }}
+        >
+          <Link href="/contact">
+            <A>Contact</A>
+          </Link>
+        </Li>
+        <Li
+          whileHover={{
+            scale: 1.15,
+            originX: 0,
+          }}
+          transition={{ type: 'spring', stiffness: 200 }}
         >
           <Link href="/blog">
             <A>Blog</A>
@@ -135,15 +146,14 @@ const A = styled.a`
   text-decoration: none;
   color: #111216;
   cursor: pointer;
+  transition: 100ms ease;
 
   &:visited {
     color: #111216;
   }
 
-  &[aria-current="page"] {
-    color: #333332;
-    font-weight: bold;
-    transform: scale(1.2);
+  &:hover {
+    color: #1b3c80;
   }
 `;
 

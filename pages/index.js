@@ -1,8 +1,8 @@
-import Head from "next/head";
-import Layout from "components/Layout";
+import Head from 'next/head';
+import Layout from 'components/Layout';
 
-import { motion } from "framer-motion";
-import styled from "styled-components";
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
 
 export default function Home() {
   return (
@@ -13,19 +13,19 @@ export default function Home() {
       </Head>
       <motion.div
         whileHover={{ scale: 1.02 }}
-        transition={{ type: "spring", stiffness: 300 }}
+        transition={{ type: 'spring', stiffness: 300 }}
       >
         <Title
-          initial={{ opacity: 0, x: "-100vw", y: "-100vh" }}
-          animate={{ opacity: 1, x: "-5vw", y: 20 }}
-          transition={{ type: "spring", stiffness: 30 }}
+          initial={{ opacity: 0, x: '-100vw', y: '-100vh' }}
+          animate={{ opacity: 1, x: '-5vw', y: 20 }}
+          transition={{ type: 'spring', stiffness: 30 }}
         >
           andreas
         </Title>
         <Title
-          initial={{ opacity: 0, x: "100vw", y: "100vh" }}
-          animate={{ opacity: 1, x: "6vw", y: -20 }}
-          transition={{ type: "spring", stiffness: 30, delay: 0.4 }}
+          initial={{ opacity: 0, x: '100vw', y: '100vh' }}
+          animate={{ opacity: 1, x: '6vw', y: -20 }}
+          transition={{ type: 'spring', stiffness: 30, delay: 0.4 }}
         >
           lindberg
         </Title>
@@ -35,9 +35,10 @@ export default function Home() {
 }
 
 const Title = styled(motion.h1)`
-  font-size: 5em;
+  font-size: 4.5em;
+  margin: 5px 0;
   text-transform: uppercase;
-  font-family: "Oswald", sans-serif;
+  font-family: 'Oswald', sans-serif;
   cursor: default;
   user-select: none;
   text-shadow: #1b3c80 1px 1px, #1b3c80 2px 2px, #1b3c80 3px 3px,

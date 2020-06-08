@@ -21,6 +21,7 @@ const SHeader = styled.div`
   margin-top: 40px;
   font-family: "Oswald", sans-serif;
   font-weight: normal;
+  cursor: default;
 `;
 
 export default Header;

@@ -1,36 +1,36 @@
-import Layout from "components/Layout";
-import { request } from "lib/datocms";
-import { getAllPostsWithSlug, getPostData } from "lib/posts";
-import { markdownToHtml } from "lib/markdownToHtml";
-import { Image } from "react-datocms";
-import styled from "styled-components";
-import { useRouter } from "next/router";
+import Layout from 'components/Layout';
+import { request } from 'lib/datocms';
+import { getAllPostsWithSlug, getPostData } from 'lib/posts';
+import markdownToHtml from 'lib/markdownToHtml';
+import { Image } from 'react-datocms';
+import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 const Hej = ({ post }) => {
-  //   const router = useRouter();
-  //   if (!router.isFallback && !post?.slug) {
-  //     return <ErrorPage statusCode={404} />;
-  //   }
+  const router = useRouter();
+  if (!router.isFallback && !post?.slug) {
+    return <ErrorPage statusCode={404} />;
+  }
 
   console.log(post);
 
   return (
     <Layout pageTitle="Blog" direction="column">
-      <SPost key={post.id}>
+      {/* <SPost key={post.id}>
         <Image data={post.image.responsiveImage} />
         <Link href="/blog/:slug" as={`/blog/${post.id}`}>
           <Title>{post.title}</Title>
         </Link>
         <Date>Published: {post.publishDate}</Date>
-        <p>{post.title}</p>
-      </SPost>
+        <p>{post.content}</p>
+      </SPost> */}
     </Layout>
   );
 };
 
 export async function getStaticProps({ params }) {
-  const data = await getPostAndMorePosts(params.slug);
-  const content = await markdownToHtml(data?.post?.content || "");
+  const data = await getPostData(params.slug);
+  const content = await markdownToHtml(data?.post?.content || '');
 
   return {
     props: {
@@ -43,7 +43,8 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const allPosts = await getAllPostsWithSlug();
+  const allPosts = await getPostData();
+  console.log(allPosts);
   return {
     paths: allPosts?.map((post) => `/posts/${post.slug}`) || [],
     fallback: true,
@@ -68,7 +69,7 @@ const Date = styled.p`
 `;
 
 const Title = styled.h1`
-  font-family: "Oswald", sans-serif;
+  font-family: 'Oswald', sans-serif;
   border-bottom: 2px solid #111216;
   margin-bottom: 5px;
 `;

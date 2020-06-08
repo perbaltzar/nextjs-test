@@ -1,13 +1,13 @@
-import Link from "next/link";
-import Layout from "components/Layout";
-import Head from "next/head";
-import { request } from "lib/datocms";
-import { Image } from "react-datocms";
-import { motion } from "framer-motion";
-import styled from "styled-components";
+import Link from 'next/link';
+import Layout from 'components/Layout';
+import Head from 'next/head';
+import { request } from 'lib/datocms';
+import { Image } from 'react-datocms';
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
 
 const BLOG_QUERY = `query Blog {
-  allPosts {
+  allPosts(orderBy: _publishedAt_DESC) {
     id
     publishDate
     title
@@ -40,19 +40,19 @@ export async function getStaticProps() {
   };
 }
 
-const PostVariants = {
+const containterVariants = {
   hidden: {
     opacity: 0,
-    y: "-100vh",
+    y: '-100vh',
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
-      stiffness: 60,
-      when: "beforeChildren",
-      staggerChildren: 1,
+      type: 'spring',
+      stiffness: 100,
+      mass: 1.1,
+      staggerChildren: 0.5,
     },
   },
 };
@@ -60,9 +60,11 @@ const PostVariants = {
 const childVariants = {
   hidden: {
     opacity: 0,
+    y: '-100vh',
   },
   visible: {
     opacity: 1,
+    y: 0,
   },
 };
 
@@ -73,40 +75,34 @@ const Blog = ({ data }) => {
         <title>Blog | Andreas Lindberg</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {data.allPosts.map((post) => (
-        <Post
-          key={post.id}
-          variants={PostVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* <Link href="/blog/:slug" as={`/blog/${post.id}`}> */}
-          <Img
-            variants={childVariants}
-            initial="hidden"
-            animate="visible"
-            data={post.image.responsiveImage}
-          />
-          {/* </Link> */}
-          <Link href="/blog/:slug" as={`/blog/${post.slug}`}>
-            <Title
-              variants={childVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover={{ scale: 1.05, originX: 0 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              {post.title}
-            </Title>
-          </Link>
-          <Date variants={childVariants} initial="hidden" animate="visible">
-            Published: {post.publishDate}
-          </Date>
-          <motion.p variants={childVariants} initial="hidden" animate="visible">
-            {post.description}
-          </motion.p>
-        </Post>
-      ))}
+      <motion.div
+        variants={containterVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {data.allPosts.map((post) => (
+          <Post variants={childVariants} key={post.id}>
+            <Link href="/blog/:slug" as={`/blog/${post.slug}`}>
+              <Img
+                whileHover={{ scale: 0.99, originX: 0 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                <Image data={post.image.responsiveImage} />
+              </Img>
+            </Link>
+            <Link href="/blog/:slug" as={`/blog/${post.slug}`}>
+              <Title
+                whileHover={{ scale: 1.05, originX: 0 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                {post.title}
+              </Title>
+            </Link>
+            <Date>Published: {post.publishDate}</Date>
+            <motion.p>{post.description}</motion.p>
+          </Post>
+        ))}
+      </motion.div>
     </Layout>
   );
 };
@@ -128,7 +124,7 @@ const Post = styled(motion.div)`
   }
 `;
 
-const Img = styled(Image)`
+const Img = styled(motion.div)`
   cursor: pointer;
 `;
 
@@ -139,7 +135,7 @@ const Date = styled(motion.p)`
 `;
 
 const Title = styled(motion.h1)`
-  font-family: "Oswald", sans-serif;
+  font-family: 'Oswald', sans-serif;
   margin: 5px 0;
   cursor: pointer;
 `;
